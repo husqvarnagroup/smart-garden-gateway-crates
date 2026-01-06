@@ -1,0 +1,17 @@
+[package]
+name = "sg-ipc"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0"
+log = "=0.4.21"
+thiserror = "2.0"
+tokio = { version = "1.43.0", features = ["io-util", "rt", "sync", "time", "macros"] }
+tokioutil = { path = "../tokioutil" }
+tracing = "0.1"
+
+[dev-dependencies]
+clap = { version = "4.5.42", features = ["derive"] }
+rand = "0.9.2"
+tokio = { version = "*", features = ["macros", "net", "time"] }

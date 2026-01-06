@@ -1,0 +1,13 @@
+[workspace]
+members = [
+    "gardenalog",
+    "lwm2m-objgen",
+    "lwm2m-types",
+    "sg-ipc",
+    "systemd-async",
+    "tokio-task-rpc",
+    "tokio-task-rpc-util",
+    "tokioutil",
+    "xsd2rust",
+]
+resolver = "2"

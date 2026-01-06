@@ -1,0 +1,8 @@
+[package]
+name = "systemd-async"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+log = "=0.4.21"
+tokio = { version = "1.43.0", features = ["net"] }
