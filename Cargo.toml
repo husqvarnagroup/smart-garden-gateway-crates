@@ -3,6 +3,7 @@ members = [
     "gardenalog",
     "lsdl",
     "lsdl-sys",
+    "lwm2m",
     "lwm2m-objgen",
     "lwm2m-types",
     "sg-ipc",
