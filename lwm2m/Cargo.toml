@@ -1,0 +1,41 @@
+# SPDX-FileCopyrightText: GARDENA GmbH
+#
+# SPDX-License-Identifier: MIT
+
+[package]
+name = "lwm2m"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+
+[dependencies]
+anyhow = "1.0"
+async-trait = "0.1"
+base64 = "0.22.1"
+hex = "0.4"
+log = "=0.4.21"
+lwm2m-types = { path = "../lwm2m-types" }
+num-derive = "0.4"
+num-traits = "0.2"
+rand = "0.8"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+sg-ipc = { path = "../sg-ipc" }
+thiserror = "2.0"
+tracing = "0.1"
+
+# Transitive dependencies held back for Yocto/Rust 1.75.0
+unicode-segmentation = "=1.12.0"
+
+[build-dependencies]
+convert_case = "0.7.1"
+lazy_static = "1.4"
+lwm2m-objgen = { path = "../lwm2m-objgen" }
+proc-macro2 = "1.0"
+quote = "1.0"
+regex = "1.7.3"
+
+[dev-dependencies]
+env_logger = "0.11.6"
+test-log = { version = "0.2", features = ["trace"] }
+tokio = { version = "1.43.0", features = ["macros", "net", "time", "sync"] }

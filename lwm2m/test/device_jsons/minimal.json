@@ -1,0 +1,261 @@
+{
+  "connection_status": {
+    "0": {
+      "online": {
+        "vb": true
+      }
+    },
+    "_urn": "urn:oma:lwm2m:x:28171"
+  },
+  "device": {
+    "_urn": "urn:oma:lwm2m:oma:3:1.1",
+    "0": {
+      "manufacturer": {
+        "vs": "Gardena",
+        "ts": 1676361044
+      },
+      "model_number": {
+        "vs": "1",
+        "ts": 1676361044
+      },
+      "serial_number": {
+        "vs": "00000087",
+        "ts": 1676361044
+      },
+      "firmware_version": {
+        "vs": "0.9.0-3.2.0",
+        "ts": 1676361044
+      },
+      "current_time": {
+        "vt": 506977,
+        "ts": 1676361044
+      },
+      "utc_offset": {
+        "vs": "",
+        "ts": 1676361044
+      },
+      "timezone": {
+        "vs": "",
+        "ts": 1676361044
+      },
+      "supported_binding_and_modes": {
+        "vs": "U",
+        "ts": 1676361044
+      },
+      "device_type": {
+        "vs": "Generic",
+        "ts": 1676361044
+      },
+      "hardware_version": {
+        "vs": "0.1.0",
+        "ts": 1676361044
+      },
+      "software_version": {
+        "vs": "0.1.0+1-ga44f94e",
+        "ts": 1676361044
+      },
+      "error_code": {
+        "ai": [
+          0
+        ],
+        "ts": 1676361044
+      }
+    }
+  },
+  "connectivity_monitoring": {
+    "_urn": "urn:oma:lwm2m:oma:4:1.2",
+    "0": {
+      "network_bearer": {
+        "vi": 40,
+        "ts": 1676361044
+      },
+      "radio_signal_strength": {
+        "vi": -68,
+        "ts": 1676361044
+      },
+      "link_quality": {
+        "vi": 2,
+        "ts": 1676361044
+      },
+      "cell_id": {
+        "vi": 0,
+        "ts": 1676361044
+      },
+      "smnc": {
+        "vi": 0,
+        "ts": 1676361044
+      },
+      "smcc": {
+        "vi": 0,
+        "ts": 1676361044
+      },
+      "signalsnr": {
+        "vi": 0,
+        "ts": 1676361044
+      },
+      "lac": {
+        "vi": 0,
+        "ts": 1676361044
+      }
+    }
+  },
+  "firmware_update": {
+    "_urn": "urn:oma:lwm2m:oma:5:1.1",
+    "0": {
+      "package_uri": {
+        "vs": "",
+        "ts": 1676361044
+      },
+      "state": {
+        "vi": 0,
+        "ts": 1676361044
+      },
+      "update_result": {
+        "vi": 0,
+        "ts": 1676361044
+      },
+      "pkg_name": {
+        "vs": "",
+        "ts": 1676361044
+      },
+      "pkg_version": {
+        "vs": "",
+        "ts": 1676361044
+      },
+      "firmware_update_delivery_method": {
+        "vi": 1,
+        "ts": 1676361044
+      }
+    }
+  },
+  "water_control": {
+    "_urn": "urn:oma:lwm2m:x:28151:0.2",
+    "0": {
+      "watering_duration_remaining": {
+        "vi": 0,
+        "ts": 1676361044
+      },
+      "watering_duration_default": {
+        "vi": 600,
+        "ts": 1676361044
+      },
+      "is_watering": {
+        "vb": false,
+        "ts": 1676361044
+      },
+      "watering_mode": {
+        "vi": 0,
+        "ts": 1676361044
+      }
+    }
+  },
+  "testing": {
+    "_urn": "urn:oma:lwm2m:x:32765:0.1",
+    "0": {
+      "string_single": {
+        "vs": "",
+        "ts": 1676361044
+      },
+      "integer_single": {
+        "vi": 0,
+        "ts": 1676361044
+      },
+      "float_single": {
+        "vf": 0,
+        "ts": 1676361044
+      },
+      "boolean_single": {
+        "vb": false,
+        "ts": 1676361044
+      },
+      "opaque_single": {
+        "vo": "AAAAAAAAAAAAAAAAAAAAAA==",
+        "ts": 1676361044
+      },
+      "time_single": {
+        "vt": 0,
+        "ts": 1676361044
+      },
+      "objectlink_single": {
+        "vl": null,
+        "ts": 1676361044
+      },
+      "unsigned_integer_single": {
+        "vi": 0,
+        "ts": 1676361044
+      },
+      "resource_readonly": {
+        "vs": "",
+        "ts": 1676361044
+      },
+      "resource_readwrite": {
+        "vs": "",
+        "ts": 1676361044
+      },
+      "resource_mandatory": {
+        "vs": "",
+        "ts": 1676361044
+      },
+      "resource_optional": {
+        "vs": "",
+        "ts": 1676361044
+      },
+      "string_multiple": {
+        "as": [
+          "",
+          ""
+        ],
+        "ts": 1676361044
+      },
+      "integer_multiple": {
+        "ai": [
+          0,
+          0
+        ],
+        "ts": 1676361044
+      },
+      "float_multiple": {
+        "af": [
+          0,
+          0
+        ],
+        "ts": 1676361044
+      },
+      "boolean_multiple": {
+        "ab": [
+          false,
+          false
+        ],
+        "ts": 1676361044
+      },
+      "opaque_multiple": {
+        "ao": [
+          "AAAAAAAAAAAAAAAAAAAAAA==",
+          "AAAAAAAAAAAAAAAAAAAAAA=="
+        ],
+        "ts": 1676361044
+      },
+      "time_multiple": {
+        "at": [
+          0,
+          0
+        ],
+        "ts": 1676361044
+      },
+      "objectlink_multiple": {
+        "al": [
+          null,
+          null
+        ],
+        "ts": 1676361044
+      },
+      "unsigned_integer_multiple": {
+        "ai": [
+          0,
+          0
+        ],
+        "ts": 1676361044
+      }
+    }
+  }
+}
