@@ -1,0 +1,12 @@
+<3>[bnw@55029] error before span
+<6>[bnw@55029] error before span
+<6>[bnw@55029] info before span
+<7>[bnw@55029] debug before span
+<3>[bnw@55029 activity="in_span"] error in span
+<6>[bnw@55029 activity="in_span"] error in span
+<6>[bnw@55029 activity="in_span"] info in span
+<7>[bnw@55029 activity="in_span"] debug in span
+<3>[bnw@55029] error after span
+<6>[bnw@55029] error after span
+<6>[bnw@55029] info after span
+<7>[bnw@55029] debug after span
