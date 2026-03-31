@@ -1,9 +1,9 @@
 [package]
 name = "gardenalog"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 
 [dependencies]
-libc = "0.2"
-tracing = "0.1"
-tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+libc = { version = "0.2", default-features = false }
+tracing = { version = "0.1", default-features = false }
+tracing-subscriber = { version = "0.3", default-features = false, features = ["env-filter", "fmt"] }
