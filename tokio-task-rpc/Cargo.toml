@@ -17,6 +17,6 @@ syn = { version = "1.0", features = ["derive", "extra-traits", "full"] }
 anyhow = "1.0"
 futures-util = { version = "0.3", features = [] }
 rpc-mpsc = { path = "../rpc-mpsc" }
-tokio = { version = "=1.43.0", features = ["sync"] }
+tokio = { version = "=1.43.1", features = ["sync"] }
 tokio-task-rpc-util = { path = "../tokio-task-rpc-util" }
 tracing = "0.1"
