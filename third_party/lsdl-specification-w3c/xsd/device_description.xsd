@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+SPDX-FileCopyrightText: 2026 Lemonbeat GmbH
+
+SPDX-License-Identifier: LicenseRef-Lemonbeat-W3C
+-->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:device_descriptionxsd" xmlns="urn:device_descriptionxsd" elementFormDefault="qualified">
+  <xs:complexType name="infoType">
+    <xs:attribute name="type_id" type="xs:unsignedInt" use="required"/>
+    <xs:attribute name="number" type="xs:unsignedLong" use="optional"/>
+    <xs:attribute name="string" type="xs:string" use="optional"/>
+    <xs:attribute name="hex" type="xs:hexBinary" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="deviceDescriptionGetType">
+</xs:complexType>
+  <xs:complexType name="deviceDescriptionType">
+    <xs:sequence minOccurs="1" maxOccurs="unbounded">
+      <xs:element name="info" type="infoType"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="network">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="device" minOccurs="1" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="device_description_get" type="deviceDescriptionGetType"/>
+              <xs:element name="device_description_report" type="deviceDescriptionType"/>
+              <xs:element name="device_description_set" type="deviceDescriptionType"/>
+            </xs:choice>
+            <xs:attribute name="version" type="xs:unsignedInt" use="required"/>
+            <xs:attribute name="device_id" type="xs:unsignedInt" use="optional"/>
+            <xs:attribute name="go_to_sleep" type="xs:unsignedInt" use="optional"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="version" type="xs:unsignedInt" use="required"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

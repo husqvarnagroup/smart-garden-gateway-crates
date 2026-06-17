@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+SPDX-FileCopyrightText: 2026 Lemonbeat GmbH
+
+SPDX-License-Identifier: LicenseRef-Lemonbeat-W3C
+-->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:phyxsd" xmlns="urn:phyxsd" elementFormDefault="qualified">
+  <xs:simpleType name="payloadType">
+    <xs:restriction base="xs:hexBinary">
+      <xs:minLength value="0"/>
+      <xs:maxLength value="2047"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="phy">
+    <xs:complexType>
+      <xs:attribute name="payload" type="payloadType" use="required"/>
+      <xs:attribute name="phy_layer_version" type="xs:unsignedInt" use="required"/>
+      <xs:attribute name="security" type="xs:unsignedInt" use="required"/>
+      <xs:attribute name="foward_error_correction" type="xs:unsignedInt" use="required"/>
+      <xs:attribute name="foward_error_correction_length" type="xs:unsignedInt" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

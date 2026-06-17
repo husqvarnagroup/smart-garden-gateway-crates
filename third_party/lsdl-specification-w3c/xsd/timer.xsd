@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+SPDX-FileCopyrightText: 2026 Lemonbeat GmbH
+
+SPDX-License-Identifier: LicenseRef-Lemonbeat-W3C
+-->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:timerxsd" xmlns="urn:timerxsd" elementFormDefault="qualified">
+  <xs:complexType name="executeType">
+    <xs:attribute name="timer_id" type="xs:unsignedInt" use="required"/>
+    <xs:attribute name="after" type="xs:unsignedInt" use="required"/>
+    <xs:attribute name="calculation_id" type="xs:unsignedInt" use="optional"/>
+    <xs:attribute name="action_id" type="xs:unsignedInt" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="timerGetType">
+    <xs:attribute name="timer_id" type="xs:unsignedInt" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="timerReportType">
+    <xs:sequence>
+      <xs:element name="execute" type="executeType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="timerSetType">
+    <xs:sequence>
+      <xs:element name="execute" type="executeType" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="timerDeleteType">
+    <xs:attribute name="timer_id" type="xs:unsignedInt" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="timerMemoryGetType">
+</xs:complexType>
+  <xs:complexType name="timerMemoryReportType">
+    <xs:attribute name="count" type="xs:unsignedInt" use="required"/>
+    <xs:attribute name="free_count" type="xs:unsignedInt" use="required"/>
+  </xs:complexType>
+  <xs:element name="network">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="device" minOccurs="1" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="timer_get" type="timerGetType"/>
+              <xs:element name="timer_report" type="timerReportType"/>
+              <xs:element name="timer_set" type="timerSetType"/>
+              <xs:element name="timer_delete" type="timerDeleteType"/>
+              <xs:element name="timer_get_memory" type="timerMemoryGetType"/>
+              <xs:element name="timer_report_memory" type="timerMemoryReportType"/>
+            </xs:choice>
+            <xs:attribute name="version" type="xs:unsignedInt" use="required"/>
+            <xs:attribute name="device_id" type="xs:unsignedInt" use="optional"/>
+            <xs:attribute name="go_to_sleep" type="xs:unsignedInt" use="optional"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="version" type="xs:unsignedInt" use="required"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

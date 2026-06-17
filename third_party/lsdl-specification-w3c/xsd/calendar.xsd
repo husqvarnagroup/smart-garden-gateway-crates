@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+SPDX-FileCopyrightText: 2026 Lemonbeat GmbH
+
+SPDX-License-Identifier: LicenseRef-Lemonbeat-W3C
+-->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:calendarxsd" xmlns="urn:calendarxsd" elementFormDefault="qualified">
+  <xs:complexType name="taskType">
+    <xs:attribute name="task_id" type="xs:unsignedInt" use="required"/>
+    <xs:attribute name="start" type="xs:unsignedLong" use="required"/>
+    <xs:attribute name="action_id" type="xs:unsignedInt" use="optional"/>
+    <xs:attribute name="end" type="xs:unsignedLong" use="optional"/>
+    <xs:attribute name="repeat" type="xs:unsignedInt" use="optional"/>
+    <xs:attribute name="weekdays" type="xs:unsignedByte" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="calendarGetType">
+    <xs:attribute name="task_id" type="xs:unsignedInt" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="calendarReportType">
+    <xs:sequence>
+      <xs:element name="task" type="taskType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="calendarSetType">
+    <xs:sequence>
+      <xs:element name="task" type="taskType" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="calendarDeleteType">
+    <xs:attribute name="task_id" type="xs:unsignedInt" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="calendarTimezoneGetType">
+</xs:complexType>
+  <xs:complexType name="calendarTimezoneSetType">
+    <xs:attribute name="offset" type="xs:int" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="calendarTimezoneReportType">
+    <xs:attribute name="offset" type="xs:int" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="calendarMemoryGetType">
+</xs:complexType>
+  <xs:complexType name="calendarMemoryReportType">
+    <xs:attribute name="count" type="xs:unsignedInt" use="required"/>
+    <xs:attribute name="free_count" type="xs:unsignedInt" use="required"/>
+  </xs:complexType>
+  <xs:element name="network">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="device" minOccurs="1" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="calendar_get" type="calendarGetType"/>
+              <xs:element name="calendar_report" type="calendarReportType"/>
+              <xs:element name="calendar_set" type="calendarSetType"/>
+              <xs:element name="calendar_delete" type="calendarDeleteType"/>
+              <xs:element name="calendar_get_timezone" type="calendarTimezoneGetType"/>
+              <xs:element name="calendar_set_timezone" type="calendarTimezoneSetType"/>
+              <xs:element name="calendar_report_timezone" type="calendarTimezoneReportType"/>
+              <xs:element name="calendar_get_memory" type="calendarMemoryGetType"/>
+              <xs:element name="calendar_report_memory" type="calendarMemoryReportType"/>
+            </xs:choice>
+            <xs:attribute name="version" type="xs:unsignedInt" use="required"/>
+            <xs:attribute name="device_id" type="xs:unsignedInt" use="optional"/>
+            <xs:attribute name="go_to_sleep" type="xs:unsignedInt" use="optional"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="version" type="xs:unsignedInt" use="required"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

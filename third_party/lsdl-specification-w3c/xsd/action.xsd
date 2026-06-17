@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+SPDX-FileCopyrightText: 2026 Lemonbeat GmbH
+
+SPDX-License-Identifier: LicenseRef-Lemonbeat-W3C
+-->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:actionxsd" xmlns="urn:actionxsd" elementFormDefault="qualified">
+  <xs:complexType name="getType">
+    <xs:attribute name="value_id" type="xs:unsignedInt" use="required"/>
+    <xs:attribute name="partner_id" type="xs:unsignedInt" use="optional"/>
+    <xs:attribute name="transport_mode" type="xs:unsignedInt" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="setType">
+    <xs:attribute name="value_id" type="xs:unsignedInt" use="required"/>
+    <xs:attribute name="number" type="xs:double" use="optional"/>
+    <xs:attribute name="string" type="xs:string" use="optional"/>
+    <xs:attribute name="hexBinary" type="xs:hexBinary" use="optional"/>
+    <xs:attribute name="partner_id" type="xs:unsignedInt" use="optional"/>
+    <xs:attribute name="calculation_id" type="xs:unsignedInt" use="optional"/>
+    <xs:attribute name="transport_mode" type="xs:unsignedInt" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="reportType">
+    <xs:attribute name="my_value_id" type="xs:unsignedInt" use="required"/>
+    <xs:attribute name="partner_id" type="xs:unsignedInt" use="optional"/>
+    <xs:attribute name="transport_mode" type="xs:unsignedInt" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="invokeType">
+    <xs:attribute name="action_id" type="xs:unsignedInt" use="required"/>
+    <xs:attribute name="partner_id" type="xs:unsignedInt" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="timerType">
+    <xs:attribute name="timer_id" type="xs:unsignedInt" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="actionType">
+    <xs:choice minOccurs="1" maxOccurs="unbounded">
+      <xs:element name="get" type="getType"/>
+      <xs:element name="set" type="setType"/>
+      <xs:element name="report" type="reportType"/>
+      <xs:element name="invoke" type="invokeType"/>
+      <xs:element name="timer_start" type="timerType"/>
+      <xs:element name="timer_stop" type="timerType"/>
+    </xs:choice>
+    <xs:attribute name="action_id" type="xs:unsignedInt" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="actionGetType">
+    <xs:attribute name="action_id" type="xs:unsignedInt" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="actionReportType">
+    <xs:sequence>
+      <xs:element name="action" type="actionType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="actionSetType">
+    <xs:sequence>
+      <xs:element name="action" type="actionType" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="actionDeleteType">
+    <xs:attribute name="action_id" type="xs:unsignedInt" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="actionInvokeType">
+    <xs:attribute name="action_id" type="xs:unsignedInt" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="actionMemoryGetType">
+</xs:complexType>
+  <xs:complexType name="actionMemoryReportType">
+    <xs:attribute name="count" type="xs:unsignedInt" use="required"/>
+    <xs:attribute name="free_count" type="xs:unsignedInt" use="required"/>
+  </xs:complexType>
+  <xs:element name="network">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="device" minOccurs="1" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="action_get" type="actionGetType"/>
+              <xs:element name="action_report" type="actionReportType"/>
+              <xs:element name="action_set" type="actionSetType"/>
+              <xs:element name="action_delete" type="actionDeleteType"/>
+              <xs:element name="action_invoke" type="actionInvokeType"/>
+              <xs:element name="action_get_memory" type="actionMemoryGetType"/>
+              <xs:element name="action_report_memory" type="actionMemoryReportType"/>
+            </xs:choice>
+            <xs:attribute name="version" type="xs:unsignedInt" use="required"/>
+            <xs:attribute name="device_id" type="xs:unsignedInt" use="optional"/>
+            <xs:attribute name="go_to_sleep" type="xs:unsignedInt" use="optional"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="version" type="xs:unsignedInt" use="required"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

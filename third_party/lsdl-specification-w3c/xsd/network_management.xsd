@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+SPDX-FileCopyrightText: 2026 Lemonbeat GmbH
+
+SPDX-License-Identifier: LicenseRef-Lemonbeat-W3C
+-->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:network_managementxsd" xmlns="urn:network_managementxsd" elementFormDefault="qualified">
+  <xs:complexType name="network_include">
+    <xs:simpleContent>
+      <xs:extension base="xs:hexBinary">
+        <xs:attribute name="address_size" type="xs:unsignedByte" use="optional"/>
+        <xs:attribute name="inclusion_count" type="xs:unsignedInt" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:element name="network">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="device" minOccurs="1" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:choice minOccurs="1" maxOccurs="1">
+              <xs:element name="network_include" type="network_include"/>
+            </xs:choice>
+            <xs:attribute name="version" type="xs:unsignedInt" use="required"/>
+            <xs:attribute name="device_id" type="xs:unsignedInt" use="optional"/>
+            <xs:attribute name="go_to_sleep" type="xs:unsignedInt" use="optional"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="version" type="xs:unsignedInt" use="required"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
