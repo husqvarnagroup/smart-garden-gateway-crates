@@ -1,6 +1,7 @@
 [workspace]
 members = [
     "gardenalog",
+    "lsdl-sys",
     "lwm2m-objgen",
     "lwm2m-types",
     "sg-ipc",
