@@ -1,4 +1,3 @@
-
 fn span_example() {
     let _span = tracing::info_span!("in_span").entered();
     tracing::error!("error in span");
