@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+SPDX-FileCopyrightText: 2026 Lemonbeat GmbH
+
+SPDX-License-Identifier: LicenseRef-Lemonbeat-W3C
+-->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:statusxsd" xmlns="urn:statusxsd" elementFormDefault="qualified">
+  <xs:complexType name="statusReportType">
+    <xs:attribute name="type_id" type="xs:unsignedInt" use="required"/>
+    <xs:attribute name="code" type="xs:unsignedInt" use="required"/>
+    <xs:attribute name="level" type="xs:unsignedInt" use="required"/>
+    <xs:attribute name="data" type="xs:hexBinary" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="statusGetLevelType">
+</xs:complexType>
+  <xs:complexType name="statusSetLevelType">
+    <xs:attribute name="level" type="xs:unsignedInt" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="statusReportLevelType">
+    <xs:attribute name="level" type="xs:unsignedInt" use="required"/>
+  </xs:complexType>
+  <!-- Main Element -->
+  <xs:element name="network">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="device" minOccurs="1" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="status_report" type="statusReportType"/>
+              <xs:element name="status_get_level" type="statusGetLevelType"/>
+              <xs:element name="status_set_level" type="statusSetLevelType"/>
+              <xs:element name="status_report_level" type="statusReportLevelType"/>
+            </xs:choice>
+            <xs:attribute name="version" type="xs:unsignedInt" use="required"/>
+            <xs:attribute name="device_id" type="xs:unsignedInt" use="optional"/>
+            <xs:attribute name="go_to_sleep" type="xs:unsignedInt" use="optional"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="version" type="xs:unsignedInt" use="required"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

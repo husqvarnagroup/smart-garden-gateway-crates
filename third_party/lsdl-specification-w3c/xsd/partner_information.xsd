@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+SPDX-FileCopyrightText: 2026 Lemonbeat GmbH
+
+SPDX-License-Identifier: LicenseRef-Lemonbeat-W3C
+-->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:partner_informationxsd" xmlns="urn:partner_informationxsd" elementFormDefault="qualified">
+  <xs:complexType name="infoType">
+    <xs:attribute name="type_id" type="xs:unsignedInt" use="required"/>
+    <xs:attribute name="number" type="xs:unsignedLong" use="optional"/>
+    <xs:attribute name="string" type="xs:string" use="optional"/>
+    <xs:attribute name="hex" type="xs:hexBinary" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="partnerType">
+    <xs:sequence minOccurs="1" maxOccurs="unbounded">
+      <xs:element name="info" type="infoType"/>
+    </xs:sequence>
+    <xs:attribute name="partner_id" type="xs:unsignedInt" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="groupPartnerType">
+    <xs:attribute name="partner_id" type="xs:unsignedInt" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="groupType">
+    <xs:sequence>
+      <xs:element name="partner" type="groupPartnerType" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="partner_id" type="xs:unsignedInt" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="partnerInformationGetType">
+    <xs:attribute name="partner_id" type="xs:unsignedInt" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="partnerInformationReportType">
+    <xs:choice>
+      <xs:sequence>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="partner" type="partnerType"/>
+          <xs:element name="group" type="groupType"/>
+        </xs:choice>
+      </xs:sequence>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="partnerInformationSetType">
+    <xs:choice>
+      <xs:sequence>
+        <xs:choice minOccurs="1" maxOccurs="unbounded">
+          <xs:element name="partner" type="partnerType"/>
+          <xs:element name="group" type="groupType"/>
+        </xs:choice>
+      </xs:sequence>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="partnerInformationDeleteType">
+    <xs:attribute name="partner_id" type="xs:unsignedInt" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="partnerInformationMemoryGetType">
+</xs:complexType>
+  <xs:complexType name="partnerInformationMemoryReportType">
+    <xs:attribute name="free_count" type="xs:unsignedInt" use="required"/>
+    <xs:attribute name="count" type="xs:unsignedInt" use="required"/>
+  </xs:complexType>
+  <xs:element name="network">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="device" minOccurs="1" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="partner_information_get" type="partnerInformationGetType"/>
+              <xs:element name="partner_information_report" type="partnerInformationReportType"/>
+              <xs:element name="partner_information_set" type="partnerInformationSetType"/>
+              <xs:element name="partner_information_delete" type="partnerInformationDeleteType"/>
+              <xs:element name="partner_information_get_memory" type="partnerInformationMemoryGetType"/>
+              <xs:element name="partner_information_report_memory" type="partnerInformationMemoryReportType"/>
+            </xs:choice>
+            <xs:attribute name="version" type="xs:unsignedInt" use="required"/>
+            <xs:attribute name="device_id" type="xs:unsignedInt" use="optional"/>
+            <xs:attribute name="go_to_sleep" type="xs:unsignedInt" use="optional"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="version" type="xs:unsignedInt" use="required"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

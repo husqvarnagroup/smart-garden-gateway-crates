@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+SPDX-FileCopyrightText: 2026 Lemonbeat GmbH
+
+SPDX-License-Identifier: LicenseRef-Lemonbeat-W3C
+-->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:value_descriptionxsd" xmlns="urn:value_descriptionxsd" elementFormDefault="qualified">
+  <xs:complexType name="numberFormatType">
+    <xs:attribute name="unit" type="xs:string" use="required"/>
+    <xs:attribute name="min" type="xs:double" use="required"/>
+    <xs:attribute name="max" type="xs:double" use="required"/>
+    <xs:attribute name="step" type="xs:double" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="stringFormatType">
+    <xs:sequence>
+      <xs:element name="valid_value" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="max_length" type="xs:unsignedInt" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="hexBinaryFormatType">
+    <xs:attribute name="max_length" type="xs:unsignedInt" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="valueDescriptionGetType">
+    <xs:attribute name="value_description_id" type="xs:unsignedInt" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="valueDescriptionType">
+    <xs:choice minOccurs="1" maxOccurs="1">
+      <xs:element name="number_format" type="numberFormatType"/>
+      <xs:element name="string_format" type="stringFormatType"/>
+      <xs:element name="hexBinary_format" type="hexBinaryFormatType"/>
+    </xs:choice>
+    <xs:attribute name="value_id" type="xs:unsignedInt" use="required"/>
+    <xs:attribute name="type_id" type="xs:unsignedInt" use="required"/>
+    <xs:attribute name="mode" type="xs:unsignedInt" use="required"/>
+    <xs:attribute name="persistent" type="xs:unsignedInt" use="required"/>
+    <xs:attribute name="name" type="xs:string" use="optional"/>
+    <xs:attribute name="min_log_interval" type="xs:unsignedInt" use="optional"/>
+    <xs:attribute name="max_log_values" type="xs:unsignedInt" use="optional"/>
+    <xs:attribute name="virtual" type="xs:unsignedInt" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="valueDescriptionReportType">
+    <xs:sequence>
+      <xs:element name="value_description" type="valueDescriptionType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="valueDescriptionAddType">
+    <xs:sequence>
+      <xs:element name="value_description" type="valueDescriptionType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="valueDescriptionDeleteType">
+    <xs:attribute name="value_description_id" type="xs:unsignedInt" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="valueDescriptionMemoryGetType">
+</xs:complexType>
+  <xs:complexType name="valueDescriptionMemoryReportType">
+    <xs:attribute name="count" type="xs:unsignedInt" use="required"/>
+    <xs:attribute name="free_count" type="xs:unsignedInt" use="required"/>
+  </xs:complexType>
+  <xs:element name="network">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="device" minOccurs="1" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="value_description_get" type="valueDescriptionGetType"/>
+              <xs:element name="value_description_report" type="valueDescriptionReportType"/>
+              <xs:element name="value_description_add" type="valueDescriptionAddType"/>
+              <xs:element name="value_description_delete" type="valueDescriptionDeleteType"/>
+              <xs:element name="value_description_get_memory" type="valueDescriptionMemoryGetType"/>
+              <xs:element name="value_description_report_memory" type="valueDescriptionMemoryReportType"/>
+            </xs:choice>
+            <xs:attribute name="version" type="xs:unsignedInt" use="required"/>
+            <xs:attribute name="device_id" type="xs:unsignedInt" use="optional"/>
+            <xs:attribute name="go_to_sleep" type="xs:unsignedInt" use="optional"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="version" type="xs:unsignedInt" use="required"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

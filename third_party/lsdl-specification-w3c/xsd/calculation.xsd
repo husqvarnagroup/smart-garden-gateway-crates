@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+SPDX-FileCopyrightText: 2026 Lemonbeat GmbH
+
+SPDX-License-Identifier: LicenseRef-Lemonbeat-W3C
+-->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:calculationxsd" xmlns="urn:calculationxsd" elementFormDefault="qualified">
+  <xs:complexType name="calculationType">
+    <xs:sequence>
+      <xs:element name="left" type="calSubType" minOccurs="1" maxOccurs="1"/>
+      <xs:element name="right" type="calSubType" minOccurs="1" maxOccurs="1"/>
+    </xs:sequence>
+    <xs:attribute name="calculation_id" type="xs:unsignedInt" use="required"/>
+    <xs:attribute name="method_id" type="xs:unsignedInt" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="calSubType">
+    <xs:attribute name="value_id" type="xs:unsignedInt" use="optional"/>
+    <xs:attribute name="calculation_id" type="xs:unsignedInt" use="optional"/>
+    <xs:attribute name="partner_id" type="xs:unsignedInt" use="optional"/>
+    <xs:attribute name="statemachine_id" type="xs:unsignedInt" use="optional"/>
+    <xs:attribute name="timer_id" type="xs:unsignedInt" use="optional"/>
+    <xs:attribute name="calendar_id" type="xs:unsignedInt" use="optional"/>
+    <xs:attribute name="is_updated" type="xs:unsignedByte" use="optional"/>
+    <xs:attribute name="constant_number" type="xs:double" use="optional"/>
+    <xs:attribute name="constant_string" type="xs:string" use="optional"/>
+    <xs:attribute name="constant_hexBinary" type="xs:hexBinary" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="calculationGetType">
+    <xs:attribute name="calculation_id" type="xs:unsignedInt" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="calculationReportType">
+    <xs:sequence>
+      <xs:element name="calculation" type="calculationType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="calculationSetType">
+    <xs:sequence>
+      <xs:element name="calculation" type="calculationType" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="calculationDeleteType">
+    <xs:attribute name="calculation_id" type="xs:unsignedInt" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="calculationMemoryGetType">
+</xs:complexType>
+  <xs:complexType name="calculationMemoryReportType">
+    <xs:attribute name="count" type="xs:unsignedInt" use="required"/>
+    <xs:attribute name="free_count" type="xs:unsignedInt" use="required"/>
+  </xs:complexType>
+  <xs:element name="network">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="device" minOccurs="1" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="calculation_get" type="calculationGetType"/>
+              <xs:element name="calculation_report" type="calculationReportType"/>
+              <xs:element name="calculation_set" type="calculationSetType"/>
+              <xs:element name="calculation_delete" type="calculationDeleteType"/>
+              <xs:element name="calculation_get_memory" type="calculationMemoryGetType"/>
+              <xs:element name="calculation_report_memory" type="calculationMemoryReportType"/>
+            </xs:choice>
+            <xs:attribute name="version" type="xs:unsignedInt" use="required"/>
+            <xs:attribute name="device_id" type="xs:unsignedInt" use="optional"/>
+            <xs:attribute name="go_to_sleep" type="xs:unsignedInt" use="optional"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="version" type="xs:unsignedInt" use="required"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

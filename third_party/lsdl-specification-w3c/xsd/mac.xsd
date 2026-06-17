@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+SPDX-FileCopyrightText: 2026 Lemonbeat GmbH
+
+SPDX-License-Identifier: LicenseRef-Lemonbeat-W3C
+-->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:macxsd" xmlns="urn:macxsd" elementFormDefault="qualified">
+  <xs:simpleType name="frame_nonceType">
+    <xs:restriction base="xs:hexBinary">
+      <xs:length value="6"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="mac_source_addressType">
+    <xs:restriction base="xs:hexBinary">
+      <xs:minLength value="2"/>
+      <xs:maxLength value="17"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="frame_integrity_codeType">
+    <xs:restriction base="xs:hexBinary">
+      <xs:length value="4"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="mac_destination_adressType">
+    <xs:restriction base="xs:hexBinary">
+      <xs:minLength value="2"/>
+      <xs:maxLength value="17"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="mapType">
+    <xs:restriction base="xs:hexBinary">
+      <xs:length value="4"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="mac_option_ack_requestType">
+    <xs:attribute name="nr_retries" type="xs:unsignedInt" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="mac_option_ackType">
+    <xs:attribute name="rssi" type="xs:unsignedInt" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="mac_option_fragmentType">
+    <xs:attribute name="is_last" type="xs:unsignedInt" use="required"/>
+    <xs:attribute name="offset" type="xs:unsignedInt" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="mac_option_channel_mapType">
+    <xs:attribute name="type" type="xs:unsignedInt" use="required"/>
+    <xs:attribute name="map" type="mapType" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="mac_option_wake_on_radioType">
+    <xs:attribute name="timestamp" type="xs:unsignedInt" use="required"/>
+    <xs:attribute name="fraction" type="xs:unsignedInt" use="required"/>
+    <xs:attribute name="interval" type="xs:unsignedInt" use="required"/>
+    <xs:attribute name="channel" type="xs:unsignedInt" use="required"/>
+  </xs:complexType>
+  <xs:element name="mac">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="mac_option_ack_request" type="mac_option_ack_requestType" minOccurs="1" maxOccurs="1"/>
+        <xs:element name="mac_option_ack" type="mac_option_ackType" minOccurs="1" maxOccurs="1"/>
+        <xs:element name="mac_option_fragment" type="mac_option_fragmentType" minOccurs="0" maxOccurs="1"/>
+        <xs:element name="mac_option_channel_map" type="mac_option_channel_mapType" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element name="mac_option_wake_on_radio" type="mac_option_wake_on_radioType" minOccurs="1" maxOccurs="1"/>
+      </xs:sequence>
+      <xs:attribute name="mac_layer_version" type="xs:unsignedInt" use="required"/>
+      <xs:attribute name="frame_nonce" type="frame_nonceType" use="required"/>
+      <xs:attribute name="mac_source_address" type="mac_source_addressType" use="required"/>
+      <xs:attribute name="frame_integrity_code" type="frame_integrity_codeType" use="required"/>
+      <xs:attribute name="mac_destination_adress" type="mac_destination_adressType" use="required"/>
+      <xs:attribute name="content_type" type="xs:unsignedInt" use="required"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

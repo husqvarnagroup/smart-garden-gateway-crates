@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+SPDX-FileCopyrightText: 2026 Lemonbeat GmbH
+
+SPDX-License-Identifier: LicenseRef-Lemonbeat-W3C
+-->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:configurationxsd" xmlns="urn:configurationxsd" elementFormDefault="qualified">
+  <xs:complexType name="configStatusGetType">
+</xs:complexType>
+  <xs:complexType name="configStatusReportType">
+    <xs:attribute name="status" type="xs:unsignedInt" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="configModeSetType">
+    <xs:attribute name="mode" type="xs:unsignedInt" use="required"/>
+  </xs:complexType>
+  <xs:element name="network">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="device" minOccurs="1" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="config_status_report" type="configStatusReportType"/>
+              <xs:element name="config_status_get" type="configStatusGetType"/>
+              <xs:element name="config_mode_set" type="configModeSetType"/>
+            </xs:choice>
+            <xs:attribute name="version" type="xs:unsignedInt" use="required"/>
+            <xs:attribute name="device_id" type="xs:unsignedInt" use="optional"/>
+            <xs:attribute name="go_to_sleep" type="xs:unsignedInt" use="optional"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="version" type="xs:unsignedInt" use="required"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

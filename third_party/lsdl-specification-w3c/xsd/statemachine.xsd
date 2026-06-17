@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+SPDX-FileCopyrightText: 2026 Lemonbeat GmbH
+
+SPDX-License-Identifier: LicenseRef-Lemonbeat-W3C
+-->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:statemachinexsd" xmlns="urn:statemachinexsd" elementFormDefault="qualified">
+  <xs:complexType name="transactionType">
+    <xs:attribute name="calculation_id" type="xs:unsignedInt" use="optional"/>
+    <xs:attribute name="action_id" type="xs:unsignedInt" use="optional"/>
+    <xs:attribute name="goto_state_id" type="xs:unsignedInt" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="stateType">
+    <xs:sequence>
+      <xs:element name="transaction" type="transactionType" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="state_id" type="xs:unsignedInt" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="statemachineGetType">
+    <xs:attribute name="statemachine_id" type="xs:unsignedInt" use="optional"/>
+    <xs:attribute name="state_id" type="xs:unsignedInt" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="statemachineType">
+    <xs:choice minOccurs="1" maxOccurs="unbounded">
+      <xs:element name="state" type="stateType"/>
+    </xs:choice>
+    <xs:attribute name="statemachine_id" type="xs:unsignedInt" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="statemachineReportType">
+    <xs:sequence>
+      <xs:element name="statemachine" type="statemachineType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="statemachineSetType">
+    <xs:sequence>
+      <xs:choice minOccurs="1" maxOccurs="unbounded">
+        <xs:element name="statemachine" type="statemachineType" minOccurs="1" maxOccurs="unbounded"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="statemachineDeleteType">
+    <xs:attribute name="statemachine_id" type="xs:unsignedInt" use="optional"/>
+    <xs:attribute name="state_id" type="xs:unsignedInt" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="statemachineStateType">
+    <xs:simpleContent>
+      <xs:extension base="xs:unsignedInt">
+        <xs:attribute name="statemachine_id" type="xs:unsignedInt" use="required"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="statemachineGetStateType">
+    <xs:attribute name="statemachine_id" type="xs:unsignedInt" use="optional"/>
+  </xs:complexType>
+  <xs:complexType name="statemachineSetStateType">
+    <xs:sequence>
+      <xs:element name="statemachine_state" type="statemachineStateType" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="statemachineReportStateType">
+    <xs:sequence>
+      <xs:element name="statemachine_state" type="statemachineStateType" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="statemachineMemoryGetType">
+</xs:complexType>
+  <xs:complexType name="statemachineMemoryReportType">
+    <xs:attribute name="count" type="xs:unsignedInt" use="required"/>
+    <xs:attribute name="free_count" type="xs:unsignedInt" use="required"/>
+  </xs:complexType>
+  <xs:element name="network">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="device" minOccurs="1" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="statemachine_get" type="statemachineGetType"/>
+              <xs:element name="statemachine_report" type="statemachineReportType"/>
+              <xs:element name="statemachine_set" type="statemachineSetType"/>
+              <xs:element name="statemachine_delete" type="statemachineDeleteType"/>
+              <xs:element name="statemachine_get_state" type="statemachineGetStateType"/>
+              <xs:element name="statemachine_report_state" type="statemachineReportStateType"/>
+              <xs:element name="statemachine_set_state" type="statemachineSetStateType"/>
+              <xs:element name="statemachine_get_memory" type="statemachineMemoryGetType"/>
+              <xs:element name="statemachine_report_memory" type="statemachineMemoryReportType"/>
+              <xs:element name="statemachine_get_state_memory" type="statemachineMemoryGetType"/>
+              <xs:element name="statemachine_report_state_memory" type="statemachineMemoryReportType"/>
+            </xs:choice>
+            <xs:attribute name="version" type="xs:unsignedInt" use="required"/>
+            <xs:attribute name="device_id" type="xs:unsignedInt" use="optional"/>
+            <xs:attribute name="go_to_sleep" type="xs:unsignedInt" use="optional"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="version" type="xs:unsignedInt" use="required"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
