@@ -151,7 +151,7 @@ impl PubServiceInner {
             .includable_map
             .iter()
             .find(|(_k, &v)| v == address)
-            .ok_or_else(|| anyhow!("device with address=`{}` not found", address))?;
+            .ok_or_else(|| anyhow!("device with address=`{address}` not found"))?;
 
         self.includable_map.remove(&id);
 
