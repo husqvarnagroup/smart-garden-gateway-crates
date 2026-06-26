@@ -1,8 +1,13 @@
+# SPDX-FileCopyrightText: GARDENA GmbH
+#
+# SPDX-License-Identifier: MIT
+
 [package]
 name = "lwm2m-objgen"
 version = "0.1.0"
 authors = ["Michael Zimmermann <michael.zimmermann@grandcentrix.net>"]
 edition = "2021"
+license = "MIT"
 
 [[bin]]
 name = "lwm2m-objgen"

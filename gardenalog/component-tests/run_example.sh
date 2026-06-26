@@ -1,4 +1,9 @@
 #!/bin/bash
+
+# SPDX-FileCopyrightText: GARDENA GmbH
+#
+# SPDX-License-Identifier: MIT
+
 # Install a test example and check its output (traces).
 set -eu -o pipefail
 

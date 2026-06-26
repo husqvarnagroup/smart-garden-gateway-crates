@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: GARDENA GmbH
+//
+// SPDX-License-Identifier: MIT
+
 //! Code shared between lwm2m and lwm2m-objgen
 
 pub const OP_READ: usize = 0x1;

@@ -1,7 +1,12 @@
+# SPDX-FileCopyrightText: GARDENA GmbH
+#
+# SPDX-License-Identifier: MIT
+
 [package]
 name = "systemd-async"
 version = "0.1.0"
 edition = "2021"
+license = "MIT"
 
 [dependencies]
 log = "=0.4.21"

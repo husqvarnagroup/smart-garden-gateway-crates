@@ -1,7 +1,12 @@
+# SPDX-FileCopyrightText: GARDENA GmbH
+#
+# SPDX-License-Identifier: MIT
+
 [package]
 name = "gardenalog"
 version = "0.1.1"
 edition = "2021"
+license = "MIT"
 
 [dependencies]
 libc = { version = "0.2", default-features = false }

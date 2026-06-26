@@ -1,5 +1,10 @@
 #![warn(clippy::pedantic)]
 #![allow(
+
+// SPDX-FileCopyrightText: GARDENA GmbH
+//
+// SPDX-License-Identifier: MIT
+
     clippy::missing_errors_doc,
     clippy::missing_panics_doc,
     clippy::must_use_candidate
