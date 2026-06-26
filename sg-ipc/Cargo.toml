@@ -1,7 +1,12 @@
+# SPDX-FileCopyrightText: GARDENA GmbH
+#
+# SPDX-License-Identifier: MIT
+
 [package]
 name = "sg-ipc"
 version = "0.1.0"
 edition = "2021"
+license = "MIT"
 
 [dependencies]
 anyhow = "1.0"

@@ -1,0 +1,18 @@
+version = 1
+
+[[annotations]]
+path = [
+  "gardenalog/component-tests/expected.log",
+  "lwm2m/test/device_jsons/minimal.json",
+  "lwm2m/test/ipc_messages.txt",
+]
+SPDX-FileCopyrightText = "GARDENA GmbH"
+SPDX-License-Identifier = "MIT"
+
+[[annotations]]
+path = [
+  ".gitmodules",
+  "Cargo.lock",
+]
+SPDX-FileCopyrightText = "NONE"
+SPDX-License-Identifier = "CC0-1.0"

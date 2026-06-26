@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: GARDENA GmbH
+//
+// SPDX-License-Identifier: MIT
+
 //! Library code for use with tokio-task-rpc
 //!
 //! tokio-task-rpc generated code that uses types from this crate. Any user

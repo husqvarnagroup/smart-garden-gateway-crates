@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: GARDENA GmbH
+//
+// SPDX-License-Identifier: MIT
+
 //! tracing subscriber for GARDENAs custom log format
 
 use tracing_subscriber::layer::SubscriberExt as _;

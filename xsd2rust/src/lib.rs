@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: GARDENA GmbH
+//
+// SPDX-License-Identifier: MIT
+
 //! Convert XSD files to rust structs that can be converted to/from.
 //!
 //! Right now, this only works for a few lemonbeat XSDs because this crate is
