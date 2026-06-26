@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: GARDENA GmbH
+//
+// SPDX-License-Identifier: MIT
+
 //! Convert LWM2M object definitions to rust traits.
 
 #![warn(clippy::pedantic)]
@@ -583,7 +587,9 @@ impl Object {
 // The actual source is unknown, but it seems to be an adaption of this:
 // https://github.com/rust-lang/rust-bindgen/blob/4f9fa49ca907b831fdc3aecdfaec36b16d03c8d8/bindgen/lib.rs#L986
 //
-// See LICENSE.rust-bindgen for licensing information.
+// SPDX-SnippetBegin
+// SPDX-SnippetCopyrightText: 2013, Jyun-Yan You
+// SPDX-License-Identifier: BSD-3-Clause
 pub fn rustfmt_generated_string(source: &str) -> std::io::Result<std::borrow::Cow<'_, str>> {
     let rustfmt = "rustfmt";
     let mut cmd = std::process::Command::new(rustfmt);
@@ -628,3 +634,4 @@ pub fn rustfmt_generated_string(source: &str) -> std::io::Result<std::borrow::Co
         _ => Ok(std::borrow::Cow::Owned(source)),
     }
 }
+// SPDX-SnippetEnd

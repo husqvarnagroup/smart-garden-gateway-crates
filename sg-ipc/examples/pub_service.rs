@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: GARDENA GmbH
+//
+// SPDX-License-Identifier: MIT
+
 use anyhow::Context;
 use clap::Parser;
 use sg_ipc::PubServiceBuilder;

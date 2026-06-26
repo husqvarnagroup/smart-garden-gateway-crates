@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: GARDENA GmbH
+//
+// SPDX-License-Identifier: MIT
+
 //! A queue inspired by `tokio::sync::mpsc` but with more features
 //!
 //! Additional features:

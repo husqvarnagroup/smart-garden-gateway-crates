@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: GARDENA GmbH
+//
+// SPDX-License-Identifier: MIT
+
 fn main() {
     let args: Vec<_> = std::env::args().collect();
 

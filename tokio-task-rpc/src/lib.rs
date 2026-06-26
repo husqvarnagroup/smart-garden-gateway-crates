@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: GARDENA GmbH
+//
+// SPDX-License-Identifier: MIT
+
 //! Create a task that can be talked to via an async API.
 //!
 //! This crate implements Strategy 2 from the [tokio tutorial](https://tokio.rs/tokio/tutorial/shared-state#strategies).
