@@ -417,8 +417,7 @@ impl quote::ToTokens for Object {
                     match id {
                         #(#read_matches)*
                         _ => Err(Error::Anyhow(::anyhow::anyhow!(
-                            "read: unknown resource id `{}`",
-                            id
+                            "read: unknown resource id `{id}`"
                         ))),
                     }
                 }
@@ -434,8 +433,7 @@ impl quote::ToTokens for Object {
                     match id {
                         #(#write_matches)*
                         _ => Err(Error::Anyhow(::anyhow::anyhow!(
-                            "write: unknown resource id `{}`",
-                            id
+                            "write: unknown resource id `{id}`"
                         ))),
                     }
                 }
@@ -451,8 +449,7 @@ impl quote::ToTokens for Object {
                     match id {
                         #(#exec_matches)*
                         _ => Err(Error::Anyhow(::anyhow::anyhow!(
-                            "write: unknown resource id `{}`",
-                            id
+                            "write: unknown resource id `{id}`"
                         ))),
                     }
                 }
@@ -461,8 +458,7 @@ impl quote::ToTokens for Object {
                     match name {
                         #(#resource_names => Ok(#resource_ids),)*
                         _ => Err(Error::Anyhow(::anyhow::anyhow!(
-                            "unknown resource name `{}`",
-                            name
+                            "unknown resource name `{name}`"
                         ))),
                     }
                 }
@@ -471,8 +467,7 @@ impl quote::ToTokens for Object {
                     match id {
                         #(#resource_ids => Ok(#resource_names),)*
                         _ => Err(Error::Anyhow(::anyhow::anyhow!(
-                            "unknown resource id `{}`",
-                            id
+                            "unknown resource id `{id}`"
                         ))),
                     }
                 }
@@ -482,8 +477,7 @@ impl quote::ToTokens for Object {
                     match id {
                         #(#resource_ids => Ok(#resource_operations),)*
                         _ => Err(Error::Anyhow(::anyhow::anyhow!(
-                            "unknown resource id `{}`",
-                            id
+                            "unknown resource id `{id}`"
                         ))),
                     }
                 }
@@ -493,8 +487,7 @@ impl quote::ToTokens for Object {
                     match id {
                         #(#resource_ids => Ok(#resource_isarray),)*
                         _ => Err(Error::Anyhow(::anyhow::anyhow!(
-                            "unknown resource id `{}`",
-                            id
+                            "unknown resource id `{id}`"
                         ))),
                     }
                 }
