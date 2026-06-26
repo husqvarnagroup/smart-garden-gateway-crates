@@ -125,7 +125,7 @@ fn main() {
                 fn from_str(s: &str) -> Result<Self, Self::Err> {
                     match s {
                         #(#oids => Ok(Self::#oid_variants),)*
-                        other => Err(Error::Anyhow(::anyhow::anyhow!("unsupported object ID `{}`", other))),
+                        other => Err(Error::Anyhow(::anyhow::anyhow!("unsupported object ID `{other}`"))),
                     }
                 }
             }
