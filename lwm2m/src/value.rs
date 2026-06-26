@@ -527,7 +527,7 @@ impl<T: std::convert::Into<ValueData>> std::convert::From<TimedData<T>> for Valu
 fn vec_add_index<T>(vec: &mut Vec<Option<T>>, index: usize, value: T) -> anyhow::Result<()> {
     if let Some(element) = vec.get_mut(index) {
         if element.is_some() {
-            return Err(anyhow!("value with index {} does already exist", index));
+            return Err(anyhow!("value with index {index} does already exist"));
         }
 
         *element = Some(value);

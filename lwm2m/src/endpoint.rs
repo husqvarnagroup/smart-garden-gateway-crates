@@ -79,8 +79,7 @@ pub trait Object: Send + Sync {
             } else {
                 if *resource_instance != 0 {
                     return Err(anyhow!(
-                        "non-zero resource-instance `{}` with non-array resource",
-                        resource_id
+                        "non-zero resource-instance `{resource_id}` with non-array resource"
                     ));
                 }
 
@@ -88,7 +87,7 @@ pub trait Object: Send + Sync {
             }
         }
 
-        res.ok_or_else(|| anyhow!("no resource of type {}", resource_id_needle))
+        res.ok_or_else(|| anyhow!("no resource of type {resource_id_needle}"))
     }
 
     async fn handle_resources<'a>(
@@ -121,8 +120,7 @@ pub trait Object: Send + Sync {
             } else {
                 if *resource_instance != 0 {
                     return Err(Error::Anyhow(anyhow!(
-                        "non-zero resource-instance `{}` with non-array resource",
-                        resource_id
+                        "non-zero resource-instance `{resource_id}` with non-array resource"
                     )));
                 }
 
@@ -253,8 +251,7 @@ pub trait Endpoint: Send + Sync {
         };
         if path.next().is_some() {
             return Err(Error::Anyhow(anyhow!(
-                "path has too many segments: {:?}",
-                path
+                "path has too many segments: {path:?}"
             )));
         }
 
@@ -317,8 +314,7 @@ pub trait Endpoint: Send + Sync {
                             }
                             other => {
                                 return Err(Error::Anyhow(anyhow!(
-                                    "unsupported method: {:?}",
-                                    other
+                                    "unsupported method: {other:?}"
                                 )));
                             }
                         }
@@ -341,8 +337,7 @@ pub trait Endpoint: Send + Sync {
                             ),
                             other => {
                                 return Err(Error::Anyhow(anyhow!(
-                                    "unsupported method: {:?}",
-                                    other
+                                    "unsupported method: {other:?}"
                                 )));
                             }
                         }
@@ -379,7 +374,7 @@ pub trait Endpoint: Send + Sync {
                             }
                         },
                         other => {
-                            return Err(Error::Anyhow(anyhow!("unsupported method: {:?}", other)));
+                            return Err(Error::Anyhow(anyhow!("unsupported method: {other:?}")));
                         }
                     }
                 }
@@ -412,7 +407,7 @@ pub trait Endpoint: Send + Sync {
 
                         serde_json::json!(res)
                     }
-                    other => return Err(Error::Anyhow(anyhow!("unsupported method: {:?}", other))),
+                    other => return Err(Error::Anyhow(anyhow!("unsupported method: {other:?}"))),
                 }
             }
         }
@@ -420,7 +415,7 @@ pub trait Endpoint: Send + Sync {
         else {
             match &request.op {
                 Method::Read => self.json_endpoint().await?,
-                other => return Err(Error::Anyhow(anyhow!("unsupported method: {:?}", other))),
+                other => return Err(Error::Anyhow(anyhow!("unsupported method: {other:?}"))),
             }
         })
     }
