@@ -1,3 +1,6 @@
 [submodule "third_party/lsdl-serializer"]
 	path = third_party/lsdl-serializer
 	url = https://github.com/husqvarnagroup/smart-garden-lemonbeat-serializer.git
+[submodule "third_party/lwm2m-registry"]
+	path = third_party/lwm2m-registry
+	url = https://github.com/OpenMobileAlliance/lwm2m-registry.git
