@@ -4,3 +4,6 @@
 [submodule "third_party/lwm2m-registry"]
 	path = third_party/lwm2m-registry
 	url = https://github.com/OpenMobileAlliance/lwm2m-registry.git
+[submodule "third_party/bnw-ipso-registry"]
+	path = third_party/bnw-ipso-registry
+	url = https://github.com/husqvarnagroup/smart-garden-ipso-registry.git
