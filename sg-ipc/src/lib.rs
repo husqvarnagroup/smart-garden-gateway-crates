@@ -56,12 +56,27 @@ fn bind_domain_socket(url: &str) -> Result<UnixListener, Error> {
     Ok(listener)
 }
 
-async fn connect_domain_socket(url: &str) -> UnixStream {
+async fn connect_domain_socket(url: &str) -> Result<UnixStream, Error> {
+    const MAX_TOTAL_WAIT: tokio::time::Duration = tokio::time::Duration::from_secs(30);
+    let deadline = tokio::time::Instant::now() + MAX_TOTAL_WAIT;
+
     loop {
         match UnixStream::connect(&url).await {
-            Ok(stream) => break stream,
+            Ok(stream) => return Ok(stream),
             Err(e) => {
-                log::error!("Failed to connect to Unix socket at {url}: {e}. Retrying...");
+                if tokio::time::Instant::now() >= deadline {
+                    return Err(anyhow::anyhow!(
+                        "Failed to connect to Unix socket {} within {:?}: {}",
+                        url,
+                        MAX_TOTAL_WAIT,
+                        e
+                    ));
+                }
+                log::warn!(
+                    "Failed to connect to Unix socket at {}: {}. Retrying...",
+                    url,
+                    e
+                );
                 tokio::time::sleep(CONNECT_RETRY_SLEEP_DURATION).await;
             }
         }
@@ -338,7 +353,7 @@ pub struct ReqService {
 
 impl ReqService {
     pub async fn new(url: &str) -> Result<Self, Error> {
-        let stream = connect_domain_socket(url).await;
+        let stream = connect_domain_socket(url).await?;
 
         let (reader, writer) = stream.into_split();
         Ok(Self {
@@ -411,7 +426,7 @@ impl SubService {
         Fut: Future<Output = ()> + Send + 'static,
     {
         loop {
-            let stream = connect_domain_socket(&self.url).await;
+            let stream = connect_domain_socket(&self.url).await?;
 
             let (mut reader, _writer) = stream.into_split();
 
