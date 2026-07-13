@@ -144,9 +144,9 @@ impl RepService {
         let listener = bind_domain_socket(&self.url)?;
 
         tokioutil::spawn_named("rep-service-accept", async move {
-            self.accept(callback, listener)
-                .await
-                .expect("rep-service accept failed");
+            if let Err(e) = self.accept(callback, listener).await {
+                log::error!("rep-service accept failed: {}", e);
+            }
         });
 
         Ok(())
