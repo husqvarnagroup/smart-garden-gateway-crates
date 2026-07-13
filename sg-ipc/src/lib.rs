@@ -333,15 +333,11 @@ pub struct PubService {
 
 impl PubService {
     pub fn publish(&self, msg: &str) -> Result<(), broadcast::error::SendError<String>> {
-        // No loop needed here, if the channel is closed we should ignore it
-        match self.tx.send(msg.to_string()) {
-            Ok(_) => Ok(()),
-            Err(e) if e.to_string().contains("closed") => {
-                log::warn!("No active channel subscribers; message dropped: {}", e);
-                Ok(()) // ignore if that's acceptable
-            }
-            Err(e) => Err(e),
+        if self.tx.send(msg.to_string()).is_err() {
+            // Channel is closed (all receivers dropped)
+            log::warn!("No active channel subscribers; message dropped");
         }
+        Ok(())
     }
 }
 
