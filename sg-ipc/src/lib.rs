@@ -12,7 +12,7 @@
 
 use anyhow::{Context, Error};
 use std::future::Future;
-use tokio::io::{AsyncBufReadExt, AsyncWriteExt, BufReader};
+use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::unix::{OwnedReadHalf, OwnedWriteHalf};
 use tokio::net::{UnixListener, UnixStream};
 use tokio::sync::broadcast;
@@ -95,37 +95,57 @@ async fn read_from_socket(
     reader: &mut OwnedReadHalf,
     url: &str,
 ) -> Result<String, SocketReadError> {
-    let mut reader = BufReader::with_capacity(MESSAGE_BUFFER_INITIAL_CAPACITY_SIZE, reader);
     let mut buf = Vec::with_capacity(MESSAGE_BUFFER_INITIAL_CAPACITY_SIZE);
-    let res = reader.read_until(b'\n', &mut buf).await;
-    let msg = match res {
-        Ok(0) => {
-            log::info!("Peer has disconnected on {url}");
-            Err(SocketReadError::PeerDisconnected)
-        }
-        Ok(_) => {
-            if buf.len() > MESSAGE_BUFFER_SIZE {
-                log::error!("Received message exceeds maximum expected size of {MESSAGE_BUFFER_SIZE} bytes on {url}");
-                return Err(SocketReadError::ReadError);
-            }
-            let msg = std::str::from_utf8(&buf);
-            match msg {
-                Ok(msg) => {
-                    log::debug!("Received message: {msg} on {url}");
-                    Ok(msg.to_string())
-                }
-                Err(e) => {
-                    log::error!("Received invalid UTF-8: {e} on {url}");
-                    return Err(SocketReadError::ReadError);
-                }
-            }
-        }
-        Err(e) => {
-            log::error!("Error reading from stream: {e} on {url}");
+    let mut chunk = [0u8; 8192]; // Read in 8KB chunks
+
+    loop {
+        // Check size BEFORE reading next chunk to prevent exceeding limit
+        if buf.len() >= MESSAGE_BUFFER_SIZE {
+            log::error!(
+                "Received message exceeds maximum expected size of {MESSAGE_BUFFER_SIZE} bytes on {url}"
+            );
             return Err(SocketReadError::ReadError);
         }
-    };
-    msg
+
+        match reader.read(&mut chunk).await {
+            Ok(0) => {
+                log::info!("Peer has disconnected on {url}");
+                return Err(SocketReadError::PeerDisconnected);
+            }
+            Ok(n) => {
+                // Check for newline in the chunk we just read
+                if let Some(pos) = chunk[..n].iter().position(|&b| b == b'\n') {
+                    buf.extend_from_slice(&chunk[..=pos]);
+                    break;
+                }
+
+                // Check size BEFORE extending buffer with new data
+                if buf.len() + n > MESSAGE_BUFFER_SIZE {
+                    log::error!(
+                        "Received message exceeds maximum expected size of {MESSAGE_BUFFER_SIZE} bytes on {url}"
+                    );
+                    return Err(SocketReadError::ReadError);
+                }
+
+                buf.extend_from_slice(&chunk[..n]);
+            }
+            Err(e) => {
+                log::error!("Error reading from stream: {e} on {url}");
+                return Err(SocketReadError::ReadError);
+            }
+        }
+    }
+
+    match std::str::from_utf8(&buf) {
+        Ok(msg) => {
+            log::debug!("Received message: {msg} on {url}");
+            Ok(msg.to_string())
+        }
+        Err(e) => {
+            log::error!("Received invalid UTF-8: {e} on {url}");
+            Err(SocketReadError::ReadError)
+        }
+    }
 }
 
 async fn send_to_socket(
