@@ -12,7 +12,7 @@
 
 use anyhow::{Context, Error};
 use std::future::Future;
-use tokio::io::{AsyncBufReadExt, AsyncWriteExt, BufReader};
+use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::unix::{OwnedReadHalf, OwnedWriteHalf};
 use tokio::net::{UnixListener, UnixStream};
 use tokio::sync::broadcast;
@@ -56,12 +56,27 @@ fn bind_domain_socket(url: &str) -> Result<UnixListener, Error> {
     Ok(listener)
 }
 
-async fn connect_domain_socket(url: &str) -> UnixStream {
+async fn connect_domain_socket(url: &str) -> Result<UnixStream, Error> {
+    const MAX_TOTAL_WAIT: tokio::time::Duration = tokio::time::Duration::from_secs(30);
+    let deadline = tokio::time::Instant::now() + MAX_TOTAL_WAIT;
+
     loop {
         match UnixStream::connect(&url).await {
-            Ok(stream) => break stream,
+            Ok(stream) => return Ok(stream),
             Err(e) => {
-                log::error!("Failed to connect to Unix socket at {url}: {e}. Retrying...");
+                if tokio::time::Instant::now() >= deadline {
+                    return Err(anyhow::anyhow!(
+                        "Failed to connect to Unix socket {} within {:?}: {}",
+                        url,
+                        MAX_TOTAL_WAIT,
+                        e
+                    ));
+                }
+                log::warn!(
+                    "Failed to connect to Unix socket at {}: {}. Retrying...",
+                    url,
+                    e
+                );
                 tokio::time::sleep(CONNECT_RETRY_SLEEP_DURATION).await;
             }
         }
@@ -80,37 +95,57 @@ async fn read_from_socket(
     reader: &mut OwnedReadHalf,
     url: &str,
 ) -> Result<String, SocketReadError> {
-    let mut reader = BufReader::with_capacity(MESSAGE_BUFFER_INITIAL_CAPACITY_SIZE, reader);
     let mut buf = Vec::with_capacity(MESSAGE_BUFFER_INITIAL_CAPACITY_SIZE);
-    let res = reader.read_until(b'\n', &mut buf).await;
-    let msg = match res {
-        Ok(0) => {
-            log::info!("Peer has disconnected on {url}");
-            Err(SocketReadError::PeerDisconnected)
-        }
-        Ok(_) => {
-            if buf.len() > MESSAGE_BUFFER_SIZE {
-                log::error!("Received message exceeds maximum expected size of {MESSAGE_BUFFER_SIZE} bytes on {url}");
-                return Err(SocketReadError::ReadError);
-            }
-            let msg = std::str::from_utf8(&buf);
-            match msg {
-                Ok(msg) => {
-                    log::debug!("Received message: {msg} on {url}");
-                    Ok(msg.to_string())
-                }
-                Err(e) => {
-                    log::error!("Received invalid UTF-8: {e} on {url}");
-                    return Err(SocketReadError::ReadError);
-                }
-            }
-        }
-        Err(e) => {
-            log::error!("Error reading from stream: {e} on {url}");
+    let mut chunk = [0u8; 8192]; // Read in 8KB chunks
+
+    loop {
+        // Check size BEFORE reading next chunk to prevent exceeding limit
+        if buf.len() >= MESSAGE_BUFFER_SIZE {
+            log::error!(
+                "Received message exceeds maximum expected size of {MESSAGE_BUFFER_SIZE} bytes on {url}"
+            );
             return Err(SocketReadError::ReadError);
         }
-    };
-    msg
+
+        match reader.read(&mut chunk).await {
+            Ok(0) => {
+                log::info!("Peer has disconnected on {url}");
+                return Err(SocketReadError::PeerDisconnected);
+            }
+            Ok(n) => {
+                // Check for newline in the chunk we just read
+                if let Some(pos) = chunk[..n].iter().position(|&b| b == b'\n') {
+                    buf.extend_from_slice(&chunk[..=pos]);
+                    break;
+                }
+
+                // Check size BEFORE extending buffer with new data
+                if buf.len() + n > MESSAGE_BUFFER_SIZE {
+                    log::error!(
+                        "Received message exceeds maximum expected size of {MESSAGE_BUFFER_SIZE} bytes on {url}"
+                    );
+                    return Err(SocketReadError::ReadError);
+                }
+
+                buf.extend_from_slice(&chunk[..n]);
+            }
+            Err(e) => {
+                log::error!("Error reading from stream: {e} on {url}");
+                return Err(SocketReadError::ReadError);
+            }
+        }
+    }
+
+    match std::str::from_utf8(&buf) {
+        Ok(msg) => {
+            log::debug!("Received message: {msg} on {url}");
+            Ok(msg.to_string())
+        }
+        Err(e) => {
+            log::error!("Received invalid UTF-8: {e} on {url}");
+            Err(SocketReadError::ReadError)
+        }
+    }
 }
 
 async fn send_to_socket(
@@ -144,9 +179,9 @@ impl RepService {
         let listener = bind_domain_socket(&self.url)?;
 
         tokioutil::spawn_named("rep-service-accept", async move {
-            self.accept(callback, listener)
-                .await
-                .expect("rep-service accept failed");
+            if let Err(e) = self.accept(callback, listener).await {
+                log::error!("rep-service accept failed: {}", e);
+            }
         });
 
         Ok(())
@@ -318,15 +353,11 @@ pub struct PubService {
 
 impl PubService {
     pub fn publish(&self, msg: &str) -> Result<(), broadcast::error::SendError<String>> {
-        // No loop needed here, if the channel is closed we should ignore it
-        match self.tx.send(msg.to_string()) {
-            Ok(_) => Ok(()),
-            Err(e) if e.to_string().contains("closed") => {
-                log::warn!("No active channel subscribers; message dropped: {}", e);
-                Ok(()) // ignore if that's acceptable
-            }
-            Err(e) => Err(e),
+        if self.tx.send(msg.to_string()).is_err() {
+            // Channel is closed (all receivers dropped)
+            log::warn!("No active channel subscribers; message dropped");
         }
+        Ok(())
     }
 }
 
@@ -338,7 +369,7 @@ pub struct ReqService {
 
 impl ReqService {
     pub async fn new(url: &str) -> Result<Self, Error> {
-        let stream = connect_domain_socket(url).await;
+        let stream = connect_domain_socket(url).await?;
 
         let (reader, writer) = stream.into_split();
         Ok(Self {
@@ -411,7 +442,7 @@ impl SubService {
         Fut: Future<Output = ()> + Send + 'static,
     {
         loop {
-            let stream = connect_domain_socket(&self.url).await;
+            let stream = connect_domain_socket(&self.url).await?;
 
             let (mut reader, _writer) = stream.into_split();
 
