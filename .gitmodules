@@ -1,9 +1,3 @@
 [submodule "third_party/lsdl-serializer"]
 	path = third_party/lsdl-serializer
 	url = ../smart-garden-lemonbeat-serializer.git
-[submodule "third_party/lwm2m-registry"]
-	path = third_party/lwm2m-registry
-	url = https://github.com/OpenMobileAlliance/lwm2m-registry.git
-[submodule "third_party/bnw-ipso-registry"]
-	path = third_party/bnw-ipso-registry
-	url = ../smart-garden-ipso-registry.git
