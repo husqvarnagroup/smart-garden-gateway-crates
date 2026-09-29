@@ -279,7 +279,7 @@ impl quote::ToTokens for ComplexType {
 
                 let ty = &subtype_idents[0];
                 let element = sequence.elements.first().unwrap();
-                let elemdoc = format!("list of `{}`", &element.name);
+                let elemdoc = format!("list of `{}`", element.name);
                 let elemname = &str2bytestring(&element.name);
                 (
                     quote! {},

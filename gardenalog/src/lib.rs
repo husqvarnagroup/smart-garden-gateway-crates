@@ -150,8 +150,8 @@ where
             write!(
                 writer,
                 " {}=\"{}\"",
-                &remove_invalid(name),
-                &escape_val(value)
+                remove_invalid(name),
+                escape_val(value)
             )?;
         }
 
@@ -199,8 +199,8 @@ pub fn init_tracing() {
             write!(
                 writer,
                 "{}=\"{}\"",
-                &remove_invalid(field.name()),
-                &escape_val(&svalue)
+                remove_invalid(field.name()),
+                escape_val(&svalue)
             )
         })
         .delimited(" ");
